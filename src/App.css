@@ -1,6 +1,17 @@
 .App {
   text-align: center;
 }
+body{
+  margin:0;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+p{
+  margin: 0;
+}
 
 .App-logo {
   height: 40vmin;
@@ -12,6 +23,35 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+@media (max-width: 768px) {
+
+}
+@media (min-width:767px){
+  .root {
+      padding: 0 20%;
+  }
+}
+
+.header{
+  height: 48px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  position: relative;
+  align-items: center;
+
+}
+
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* height: 40px; */
+  width: 130px;
+}
+ 
+
 
 .App-header {
   background-color: #282c34;
