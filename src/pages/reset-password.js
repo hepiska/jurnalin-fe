@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React ,{useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,20 +8,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import {useFormValidator} from '../../hooks/useFormValidator'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import {queryStringToObject} from '../utils/helpers'
 import Container from '@material-ui/core/Container';
-import {request} from '../../utils/services'
-
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
+import {useFormValidator} from '../hooks/useFormValidator'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import {request} from '../utils/services'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -44,38 +40,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn({ history, setSection, telegram}) {
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+export default function Register({changeType, history, telegram, setSection, location}) {
   const classes = useStyles();
+  const query = queryStringToObject(location.search)
   const [showerror, seterror] = useState(null)
-  const [info, setInfo] = useState(null)
   const [loading, setLoading] = useState(false)
   const _onSubmit = ({ isValid, state }) => {
-    // request({url:"/auth/register", method: "POST", data: {}})
+
     if(isValid){
       const data = {}
       Object.keys(state).forEach(key => {
         data[key] = state[key].value
       })
       setLoading(true)
-      request({url:"/auth/login", method: "POST", data:{...data, telegram: telegram}}).then(res => {
-        localStorage.setItem("token", res.data.data.token)
 
-        if(telegram){
-          request({url:"/auth/sync/telegram", method: "POST", data: {telegram: telegram }})
-        }
-
-        setLoading(false)
-        history.replace("/")
+      request({url:"/auth/reset-password", method: "POST", data: {oldPassword:query.password,email: query.email, password: state.password.value }}).then(_res => {
+        history.replace('/auth?section=login')
 
       }).catch(err => {
         if(err.response?.data?.data){
           seterror(err.response.data.data)
-
         }else{
           seterror(err)
         }
         setLoading(false)
+
       })
+
     }else{
       seterror({message: "data tidak lengkap atau tidak sesuai format"})
     }
@@ -86,13 +82,12 @@ export default function SignIn({ history, setSection, telegram}) {
     seterror(false)
   }
   const { state, handleOnChange, handleOnSubmit, setFieldError} = useFormValidator({
-  email: {
+    confirmPassword: {
       required: false,
-      initialValue: "",
       pattern: {
-        regEx: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        message: 'Invalid email address format',
-      }
+        condition: (value, { password }) => value === password.value,
+        message: 'Passwords don`t match',
+      },
     },
     password: {
       required: true,
@@ -106,28 +101,6 @@ export default function SignIn({ history, setSection, telegram}) {
     handleOnSubmit()
   }
 
-  const forgetPassword = () => {
-      if(state.email.value){
-        setLoading(true)
-        request({url:"/auth/forget-password", method: "POST", data:{email: state.email.value}}).then(res => {
-          setLoading(false)
-          setInfo(res.data.data)
-  
-        }).catch(err => {
-          if(err.response?.data?.data){
-            seterror(err.response.data.data)
-  
-          }else{
-            seterror(err)
-          }
-          setLoading(false)
-        })
-
-      }else{
-        seterror({message: "mohon masukan email"})
-      }
-  }
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -137,32 +110,10 @@ export default function SignIn({ history, setSection, telegram}) {
           {showerror?.message}
         </Alert>
       </Snackbar>
-      <Snackbar open={!!info} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="info">
-          {info?.message}
-        </Alert>
-      </Snackbar>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Atur Ulang Password
         </Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            value={state.email.value || ""}
-            error={!!state.email.error}
-            onChange={handleOnChange("email")}
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
+        <form className={classes.form} onSubmit={handleSubmit} >
           <TextField
             variant="outlined"
             margin="normal"
@@ -172,32 +123,37 @@ export default function SignIn({ history, setSection, telegram}) {
             error={!!state.password.error}
             onChange={handleOnChange("password")}
             name="password"
-            label="Password"
+            label="New password"
             type="password"
             id="password"
             autoComplete="current-password"
           />
-          <Button
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            value={state.confirmPassword?.value || ""}
+            error={!!state.confirmPassword.error}    
+            onChange={handleOnChange("confirmPassword")}
+            name="confirm-password"
+            label="Confim Password"
+            type="password"
+            id="password"
+          />
+          {loading ? <CircularProgress /> :  (<Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
           >
-            Masuk
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link onClick={forgetPassword} variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link onClick={() => {setSection("register")}} variant="body2">
-                {"Belum punya akun? Daftar"}
-              </Link>
-            </Grid>
-          </Grid>
+            Atur Ulang password
+          </Button>) 
+         
+          }
+
+          
         </form>
       </div>
     </Container>

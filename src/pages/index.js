@@ -3,7 +3,9 @@ import Header from '../components/molecules/header'
 import Drawer from '@material-ui/core/Drawer';
 import {Switch,Route} from 'react-router-dom'
 import Register from './register'
+import ResetPassword from './reset-password'
 import Main from './main.js'
+import Penjualan from './penjualan'
 
 
 
@@ -18,7 +20,11 @@ const MainPages = ({history}) => {
     }
   },[])
     return (
+      <>
+    <Route exact path="/penjualan" component={Penjualan} />
       <Route exact path="/" component={Main} />
+      </>
+
     )
 }
 
@@ -39,7 +45,8 @@ const RootPages = () =>{
     </Drawer>
     <Switch>
       <Route exact path="/auth" component={Register} />
-      <Route exact path="/" component={MainPages} />
+      <Route exact path="/reset-password" component={ResetPassword} />
+      <Route  path="/" component={MainPages} />
 
     </Switch>
 

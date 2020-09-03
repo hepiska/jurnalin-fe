@@ -209,7 +209,7 @@ export default function Register({changeType, history, telegram, setSection}) {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Daftar
           </Button>) 
          
           }
@@ -217,7 +217,7 @@ export default function Register({changeType, history, telegram, setSection}) {
           <Grid container>
             <Grid item>
               <Link  onClick={() => {setSection("login")}} variant="body2">
-                {"Already have an account? Sign In"}
+                {"Sudah punya akun? Masuk"}
               </Link>
             </Grid>
           </Grid>
