@@ -5,6 +5,7 @@ import {Switch,Route} from 'react-router-dom'
 import Register from './register'
 import ResetPassword from './reset-password'
 import Main from './main.js'
+import Subcription from './subcription'
 import Penjualan from './penjualan'
 
 
@@ -21,7 +22,8 @@ const MainPages = ({history}) => {
   },[])
     return (
       <>
-    <Route exact path="/penjualan" component={Penjualan} />
+      <Route exact path="/penjualan" component={Penjualan} />
+      <Route exact path="/langanan" component={Subcription} />
       <Route exact path="/" component={Main} />
       </>
 

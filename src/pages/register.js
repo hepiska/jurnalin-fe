@@ -49,7 +49,7 @@ const Auth = ({location, history}) => {
 
   return (
     <div>
-            <Snackbar open={!!showerror} autoHideDuration={6000} >
+        <Snackbar open={!!showerror} autoHideDuration={6000} >
         <Alert  severity="error">
           {showerror?.message}
         </Alert>

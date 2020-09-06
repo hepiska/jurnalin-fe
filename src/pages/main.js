@@ -31,14 +31,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Main = () => {
+const Main = ({history}) => {
   const classes = useStyles();
 
   return (
     <div className={classes.paper}>
       <Grid>
       <ButtonGroup  color="primary" aria-label="contained primary button group">
-        <Button > Penjualan</Button>
+        <Button onClick={()=> {history.push("/penjualan")}}> Penjualan</Button>
         <Button  >Pembelian</Button>
         <Button  >Pengeluaran</Button>
         </ButtonGroup>

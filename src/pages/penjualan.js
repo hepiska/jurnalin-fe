@@ -6,6 +6,8 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import JurnalTable from '../components/organisms/jurnal-table';
 import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -25,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
-  item: {marginTop: theme.spacing(2), padding: "p"},
+  item: {marginTop: theme.spacing(2), padding: "8px"},
 
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -63,19 +65,23 @@ const Penjualan = () => {
           shrink: true,
         }}
       />
-          <TextField
+        
+      <Select
           id="standard-select-currency-native"
           select
-          label="Transaksi ke "
+          label="Metode Pembayaran"
+          className={classes.item}
           SelectProps={{
             native: true,
           }}
         >
-          
-        </TextField>
+          <MenuItem value={10}>Kas</MenuItem>
+          <MenuItem value={20}>Piutang</MenuItem>          
+        </Select>
         <TextField
           id="standard-select-currency-native"
-          select
+          className={classes.item}
+
           label="Nominal"
           SelectProps={{
             native: true,
@@ -86,6 +92,7 @@ const Penjualan = () => {
         <Button
             type="submit"
             fullWidth
+            className={classes.item}
             variant="contained"
             color="primary"
             className={classes.submit}
