@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Penjualan = () => {
+const Pembelian = () => {
   const classes = useStyles()
   const [showerror, seterror] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -95,7 +95,10 @@ const Penjualan = () => {
     transaction_date: {
       required: true,
      },
-     account: {
+     account_kredit: {
+      required: true,
+    },
+    account_debet : {
       required: true,
     },
     value: {
@@ -115,7 +118,7 @@ const Penjualan = () => {
           {showerror?.message}
         </Alert>
       </Snackbar>
-      <h1 className={classes.title}>Penjualan</h1>
+      <h1 className={classes.title}>Pembelian</h1>
       <div style={{width: '100%', padding: '0px 16px',   display: 'flex' ,flexDirection: "column"}}>
       <TextField
         id="date"
@@ -131,10 +134,19 @@ const Penjualan = () => {
         
       <AccountAutoComplete 
         placeholder="pilih cara bayar"
-        value={state.account.value}
-        onChange={(_value) =>  handleOnChange("account")(_value._id)}
-        label="Cara Bayar"
+        value={state.account_kredit.value}
+        onChange={(_value) =>  handleOnChange("account_kredit")(_value._id)}
+        label="Bayar Mengunakan"
         filter="sale"
+
+      className={classes.item}
+      />
+        <AccountAutoComplete 
+        placeholder="pilih cara bayar"
+        value={state.account_debet.value}
+        onChange={(_value) =>  handleOnChange("account_debet")(_value._id)}
+        label="Untuk Pembayaran"
+        filter="purchase"
 
       className={classes.item}
       />
@@ -163,13 +175,9 @@ const Penjualan = () => {
           </Button>
       </div>
       
-
-
-  
-      
     </div>
   )
 }
 
 
-export default Penjualan
+export default Pembelian

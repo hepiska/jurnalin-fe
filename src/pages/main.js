@@ -39,8 +39,8 @@ const Main = ({history}) => {
       <Grid>
       <ButtonGroup  color="primary" aria-label="contained primary button group">
         <Button onClick={()=> {history.push("/penjualan")}}> Penjualan</Button>
-        <Button  >Pembelian</Button>
-        <Button  >Pengeluaran</Button>
+        <Button onClick={()=> {history.push("/pembelian")}} >Pembelian</Button>
+        <Button onClick={()=> {history.push("/pengeluaran")}}  >Pengeluaran</Button>
         </ButtonGroup>
 
       </Grid>

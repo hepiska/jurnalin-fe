@@ -7,6 +7,9 @@ import ResetPassword from './reset-password'
 import Main from './main.js'
 import Subcription from './subcription'
 import Penjualan from './penjualan'
+import Pembelian from './pembelian'
+import Pengeluaran from './pengeluaran'
+
 
 
 
@@ -24,6 +27,8 @@ const MainPages = ({history}) => {
       <>
       <Route exact path="/penjualan" component={Penjualan} />
       <Route exact path="/langanan" component={Subcription} />
+      <Route exact path="/pembelian" component={Pembelian} />
+      <Route exact path="/pengeluaran" component={Pengeluaran} />
       <Route exact path="/" component={Main} />
       </>
 
